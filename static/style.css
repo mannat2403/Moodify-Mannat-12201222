@@ -15,6 +15,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: background 0.5s;
 }
 
 /* -----------------------------
@@ -23,7 +24,6 @@ body {
 header {
     text-align: center;
     padding: 2rem 1rem;
-    background: #4a00e0;
     background: linear-gradient(to right, #8e2de2, #4a00e0);
     color: white;
     width: 100%;
@@ -42,8 +42,8 @@ header p {
    Main section
 ----------------------------- */
 main {
-    max-width: 800px;
-    width: 90%;
+    max-width: 1000px;
+    width: 95%;
     margin: 2rem auto;
 }
 
@@ -103,26 +103,40 @@ main {
 }
 
 /* -----------------------------
-   Playlist Section
+   Results Section (Dual Columns)
 ----------------------------- */
-#playlist {
+#results {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.column {
+    flex: 1 1 450px;
+}
+
+/* -----------------------------
+   Playlist & YouTube Section
+----------------------------- */
+#playlist, #youtube-videos {
     background: rgba(255, 255, 255, 0.95);
     padding: 1.5rem;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
 }
 
-#playlist h2 {
+#playlist h2, #youtube-videos h2 {
     margin-bottom: 1rem;
     font-size: 1.8rem;
     color: #4a00e0;
 }
 
-#songs-list {
+#songs-list, #youtube-list {
     list-style: none;
 }
 
-#songs-list li {
+#songs-list li, #youtube-list li {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -133,18 +147,18 @@ main {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-#songs-list li:hover {
+#songs-list li:hover, #youtube-list li:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-#songs-list img {
+#songs-list img, #youtube-list img {
     border-radius: 8px;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
 }
 
-/* -----------------------------
-   Audio Player
------------------------------ */
 audio {
     margin-left: auto;
     outline: none;
@@ -170,15 +184,37 @@ body.Energetic {
     background: linear-gradient(to right, #f7971e, #ffd200);
 }
 
+body.Romantic {
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+}
+
+body.Angry {
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+    color: white;
+}
+
+body.Fearful {
+    background: linear-gradient(to right, #434343, #000000);
+    color: white;
+}
+
+body.Surprised {
+    background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+}
+
 /* -----------------------------
    Responsive Design
 ----------------------------- */
-@media (max-width: 600px) {
+@media (max-width: 900px) {
+    #results {
+        flex-direction: column;
+    }
+
     #mood-detection input[type="text"] {
         width: 90%;
     }
 
-    #songs-list li {
+    #songs-list li, #youtube-list li {
         flex-direction: column;
         align-items: flex-start;
     }
@@ -186,5 +222,15 @@ body.Energetic {
     audio {
         width: 100%;
         margin-left: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    header p {
+        font-size: 1rem;
     }
 }
