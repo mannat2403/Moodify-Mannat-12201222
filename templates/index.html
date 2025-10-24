@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moodify – AI Music Recommender</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
-
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moodify – AI Music Recommender</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
 </head>
 <body>
-    <header>
-        <h1>🎧 Moodify</h1>
-        <p>Music that matches your mood instantly</p>
-    </header>
+  <header>
+    <h1>🎧 Moodify</h1>
+    <p>Music that matches your mood instantly</p>
+  </header>
 
-    <main>
-        <section id="mood-detection">
-            <h2>Detect Your Mood</h2>
+  <main>
+    <section id="mood-detection">
+      <h2>Detect Your Mood</h2>
 
-            <!-- Webcam section -->
-            <video id="webcam" width="320" height="240" autoplay muted></video>
-            <button id="start-webcam-btn">Start Webcam Detection</button>
+      <!-- Webcam section -->
+      <video id="webcam" width="320" height="240" autoplay muted></video>
+      <button id="start-webcam-btn">Start Webcam Detection</button>
 
-            <p>OR</p>
+      <p>OR</p>
 
-            <!-- Text input section -->
-            <input type="text" id="text-input" placeholder="Type how you feel...">
-            <button id="analyze-text-btn">Analyze Mood</button>
+      <!-- Text input section -->
+      <input type="text" id="text-input" placeholder="Type how you feel...">
+      <button id="analyze-text-btn">Analyze Mood</button>
 
-            <p id="detected-mood">Your mood: <span>Unknown</span></p>
-        </section>
+      <p id="detected-mood">Your mood: <span>Unknown</span></p>
+    </section>
 
-        <section id="playlist">
-            <h2>Recommended Playlist</h2>
-            <ul id="songs-list">
-                <!-- Songs will appear here -->
-            </ul>
-        </section>
-    </main>
+    <!-- Combined results in two columns -->
+    <section id="results">
+      <div class="column">
+        <h2>🎵 Recommended Deezer Songs</h2>
+        <ul id="songs-list"></ul>
+      </div>
 
-    <!-- face-api.js library -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
-    <!-- Custom script -->
-    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+      <div class="column">
+        <h2>📺 YouTube Mood Videos</h2>
+        <ul id="youtube-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Face detection and main JS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
+  <script defer src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
