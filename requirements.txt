@@ -1,1 +1,3 @@
-"flask\nopencv-python\nrequests\n" 
+flask
+opencv-python
+requests
