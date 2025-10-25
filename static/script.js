@@ -38,14 +38,16 @@ async function fetchPlaylist(text) {
 
         const data = await response.json();
         const mood = data.mood || "Happy";
-        const playlist = (data.playlist && data.playlist.length) ? data.playlist : predefinedPlaylists[mood] || predefinedPlaylists["Happy"];
+        const playlist = (data.playlist && data.playlist.length)
+            ? data.playlist
+            : predefinedPlaylists[mood] || predefinedPlaylists["Happy"];
 
         // Update mood display & background
         moodDisplay.textContent = mood;
         document.body.className = mood;
 
-        // Display playlists & YouTube videos
-        displayPlaylist(playlist);
+        // Display playlists & YouTube videos safely
+        displayPlaylist(playlist || []);
         displayYouTubeVideos(data.youtube_videos || []);
 
     } catch (error) {
@@ -58,14 +60,34 @@ async function fetchPlaylist(text) {
 }
 
 // -----------------------------
-// Display Deezer playlist
+// Display Deezer playlist (safe version)
 // -----------------------------
 function displayPlaylist(playlist) {
     playlistContainer.innerHTML = "";
+
+    // If playlist is empty, show message
+    if (!playlist.length) {
+        playlistContainer.innerHTML = "<p>No songs found for this mood.</p>";
+        return;
+    }
+
     playlist.forEach(track => {
+        // Handle both predefined (string) and Deezer (object) playlists
+        if (typeof track === "string") {
+            const li = document.createElement("li");
+            li.textContent = track;
+            playlistContainer.appendChild(li);
+            return;
+        }
+
+        // Skip invalid tracks
+        if (!track.title || track.title === "Unknown Title") return;
+        if (!track.artist || track.artist === "Unknown Artist") return;
+
         const li = document.createElement("li");
+        li.classList.add("song-card");
         li.innerHTML = `
-            ${track.album_cover ? `<img src="${track.album_cover}" width="50">` : ""}
+            ${track.album_cover ? `<img src="${track.album_cover}" width="50" alt="Cover">` : ""}
             <strong>${track.title}</strong> ${track.artist ? `- ${track.artist}` : ""}
             ${track.preview ? `<audio controls src="${track.preview}"></audio>` : ""}
         `;
@@ -74,15 +96,26 @@ function displayPlaylist(playlist) {
 }
 
 // -----------------------------
-// Display YouTube videos
+// Display YouTube videos (safe version)
 // -----------------------------
 function displayYouTubeVideos(videos) {
     youtubeContainer.innerHTML = "";
+
+    // If no videos
+    if (!videos.length) {
+        youtubeContainer.innerHTML = "<p>No YouTube videos found for this mood.</p>";
+        return;
+    }
+
     videos.forEach(video => {
+        if (!video.video_url || video.video_url === "undefined") return;
+
         const li = document.createElement("li");
+        li.classList.add("video-card");
         li.innerHTML = `
-            <img src="${video.thumbnail}" width="50">
-            <a href="${video.video_url}" target="_blank"><strong>${video.title}</strong></a> - ${video.channel}
+            ${video.thumbnail ? `<img src="${video.thumbnail}" width="50" alt="Thumbnail">` : ""}
+            <a href="${video.video_url}" target="_blank"><strong>${video.title || "Untitled Video"}</strong></a>
+            ${video.channel ? ` - ${video.channel}` : ""}
         `;
         youtubeContainer.appendChild(li);
     });
@@ -125,7 +158,7 @@ startBtn.addEventListener("click", async () => {
                 const mood = mapExpressionsToMood(detection.expressions);
                 fetchPlaylist(mood);
             }
-        }, 5000);
+        }, 2000);
     } catch (err) {
         console.error("Camera error:", err);
         alert("Cannot access webcam.");

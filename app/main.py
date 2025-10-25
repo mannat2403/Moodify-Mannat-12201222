@@ -4,9 +4,25 @@ import random
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from .env file
+# Tell Python exactly where to find your .env file
+# __file__ means "this file" (main.py)
+# os.path.dirname(__file__) → the folder containing this file (Moodify/app)
+# os.path.dirname(os.path.dirname(__file__)) → one level up (Moodify/)
+env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+
+# Load your .env file from that path
+load_dotenv(dotenv_path=env_path)
 load_dotenv()
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
+
+# Check if it’s working (this line will print your key)
+print("Loaded YouTube API Key:", os.getenv("YOUTUBE_API_KEY"))
+
+# -----------------------------
+# Load environment variables
+# -----------------------------
+# load_dotenv()
+# YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
@@ -16,6 +32,15 @@ app = Flask(__name__, template_folder="../templates", static_folder="../static")
 @app.route("/")
 def home():
     return render_template("index.html")
+
+
+# @app.route("/get_songs")
+# def get_songs():
+#     print("Using API Key:", YOUTUBE_API_KEY)
+#     # Your YouTube fetch logic here
+#     return {"status": "ok"}
+
+
 
 # -----------------------------
 # Mood detection route
@@ -54,11 +79,12 @@ def detect_mood():
         res = requests.get(url).json()
         for track in res.get("data", [])[:5]:
             playlist.append({
-                "title": track["title"],
-                "artist": track["artist"]["name"],
-                "album_cover": track["album"]["cover_small"],
-                "preview": track["preview"]
-            })
+                "title": track.get("title", "Unknown Title"),
+                "artist": track.get("artist", {}).get("name", "Unknown Artist"),
+                "album_cover": track.get("album", {}).get("cover_small", ""),
+                "preview": track.get("preview", "")
+        })
+
     except Exception as e:
         print("Deezer API error:", e)
         playlist = []
@@ -86,6 +112,14 @@ def detect_mood():
             print("YouTube API error:", e)
             youtube_videos = []
 
+    # ✅ Debug lines
+    print("Detected Mood:", detected_mood)
+    print("Deezer playlist count:", len(playlist))
+    print("YouTube videos count:", len(youtube_videos))
+
+    # -----------------------------
+    # Return JSON response
+    # -----------------------------
     return jsonify({
         "mood": detected_mood,
         "playlist": playlist,
