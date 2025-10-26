@@ -1,5 +1,5 @@
 /* -----------------------------
-   Reset & base styles
+   Reset & Base Styles
 ----------------------------- */
 * {
     margin: 0;
@@ -9,14 +9,16 @@
 }
 
 body {
-    background-color: #f0f0f0;
-    color: #333;
+    background: url('https://diplo-media.s3.eu-central-1.amazonaws.com/2025/07/Best-AI-Music-Generators.webp') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff; 
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: background 0.5s;
 }
+
 
 /* -----------------------------
    Header
@@ -39,7 +41,7 @@ header p {
 }
 
 /* -----------------------------
-   Main section
+   Main Section
 ----------------------------- */
 main {
     max-width: 1000px;
@@ -48,15 +50,16 @@ main {
 }
 
 /* -----------------------------
-   Mood Detection Section
+   Mood Detection Section 
 ----------------------------- */
 #mood-detection {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.85); 
     padding: 1.5rem;
     border-radius: 15px;
     text-align: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
     margin-bottom: 2rem;
+    color: #333; 
 }
 
 #mood-detection h2 {
@@ -102,8 +105,9 @@ main {
     font-size: 1.2rem;
 }
 
+
 /* -----------------------------
-   Results Section (Dual Columns)
+   Results Section
 ----------------------------- */
 #results {
     display: flex;
@@ -116,9 +120,9 @@ main {
 }
 
 /* -----------------------------
-   Playlist & YouTube Section
+   YouTube Playlist Section
 ----------------------------- */
-#playlist, #youtube-videos {
+#youtube-videos {
     background: rgba(255, 255, 255, 0.95);
     padding: 1.5rem;
     border-radius: 15px;
@@ -126,17 +130,17 @@ main {
     margin-bottom: 2rem;
 }
 
-#playlist h2, #youtube-videos h2 {
+#youtube-videos h2 {
     margin-bottom: 1rem;
     font-size: 1.8rem;
     color: #4a00e0;
 }
 
-#songs-list, #youtube-list {
+#youtube-list {
     list-style: none;
 }
 
-#songs-list li, #youtube-list li {
+#youtube-list li {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -147,25 +151,20 @@ main {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-#songs-list li:hover, #youtube-list li:hover {
+#youtube-list li:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-#songs-list img, #youtube-list img {
+#youtube-list img {
     border-radius: 8px;
     width: 60px;
     height: 60px;
     object-fit: cover;
 }
 
-audio {
-    margin-left: auto;
-    outline: none;
-}
-
 /* -----------------------------
-   Mood-based background colors
+   Mood-Based Backgrounds
 ----------------------------- */
 body.Happy {
     background: linear-gradient(to right, #fddb92, #d1fdff);
@@ -214,14 +213,9 @@ body.Surprised {
         width: 90%;
     }
 
-    #songs-list li, #youtube-list li {
+    #youtube-list li {
         flex-direction: column;
         align-items: flex-start;
-    }
-
-    audio {
-        width: 100%;
-        margin-left: 0;
     }
 }
 

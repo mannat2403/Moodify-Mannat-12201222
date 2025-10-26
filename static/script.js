@@ -1,23 +1,8 @@
 // -----------------------------
-// Predefined playlists (fallback)
-// -----------------------------
-const predefinedPlaylists = {
-    Happy: ["Song A - Artist 1", "Song B - Artist 2", "Song C - Artist 3"],
-    Sad: ["Song D - Artist 4", "Song E - Artist 5", "Song F - Artist 6"],
-    Calm: ["Song G - Artist 7", "Song H - Artist 8", "Song I - Artist 9"],
-    Energetic: ["Song J - Artist 10", "Song K - Artist 11", "Song L - Artist 12"],
-    Romantic: ["Song M - Artist 13", "Song N - Artist 14"],
-    Angry: ["Song O - Artist 15", "Song P - Artist 16"],
-    Fearful: ["Song Q - Artist 17", "Song R - Artist 18"],
-    Surprised: ["Song S - Artist 19", "Song T - Artist 20"]
-};
-
-// -----------------------------
 // DOM references
 // -----------------------------
 const textInput = document.getElementById("text-input");
 const analyzeBtn = document.getElementById("analyze-text-btn");
-const playlistContainer = document.getElementById("songs-list");
 const youtubeContainer = document.getElementById("youtube-list");
 const moodDisplay = document.getElementById("detected-mood").querySelector("span");
 const video = document.getElementById("webcam");
@@ -26,9 +11,9 @@ const startBtn = document.getElementById("start-webcam-btn");
 let audioPlayer = new Audio();
 
 // -----------------------------
-// Fetch playlist from Flask (Deezer & YouTube)
+// Fetch YouTube videos from Flask
 // -----------------------------
-async function fetchPlaylist(text) {
+async function fetchMoodVideos(text) {
     try {
         const response = await fetch("/detect_mood", {
             method: "POST",
@@ -38,39 +23,19 @@ async function fetchPlaylist(text) {
 
         const data = await response.json();
         const mood = data.mood || "Happy";
-        const playlist = (data.playlist && data.playlist.length) ? data.playlist : predefinedPlaylists[mood] || predefinedPlaylists["Happy"];
 
         // Update mood display & background
         moodDisplay.textContent = mood;
         document.body.className = mood;
 
-        // Display playlists & YouTube videos
-        displayPlaylist(playlist);
+        // Display YouTube videos only
         displayYouTubeVideos(data.youtube_videos || []);
 
     } catch (error) {
-        console.error("Error fetching playlist:", error);
-        alert("Something went wrong. Using fallback playlist.");
-        const mood = text.charAt(0).toUpperCase() + text.slice(1);
-        displayPlaylist(predefinedPlaylists[mood] || predefinedPlaylists["Happy"]);
+        console.error("Error fetching videos:", error);
+        alert("Something went wrong while fetching mood videos.");
         displayYouTubeVideos([]);
     }
-}
-
-// -----------------------------
-// Display Deezer playlist
-// -----------------------------
-function displayPlaylist(playlist) {
-    playlistContainer.innerHTML = "";
-    playlist.forEach(track => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-            ${track.album_cover ? `<img src="${track.album_cover}" width="50">` : ""}
-            <strong>${track.title}</strong> ${track.artist ? `- ${track.artist}` : ""}
-            ${track.preview ? `<audio controls src="${track.preview}"></audio>` : ""}
-        `;
-        playlistContainer.appendChild(li);
-    });
 }
 
 // -----------------------------
@@ -78,6 +43,11 @@ function displayPlaylist(playlist) {
 // -----------------------------
 function displayYouTubeVideos(videos) {
     youtubeContainer.innerHTML = "";
+    if (videos.length === 0) {
+        youtubeContainer.innerHTML = "<li>No YouTube videos found for this mood.</li>";
+        return;
+    }
+
     videos.forEach(video => {
         const li = document.createElement("li");
         li.innerHTML = `
@@ -93,13 +63,13 @@ function displayYouTubeVideos(videos) {
 // -----------------------------
 analyzeBtn.addEventListener("click", () => {
     const text = textInput.value.trim();
-    if (text) fetchPlaylist(text);
+    if (text) fetchMoodVideos(text);
 });
 
 textInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
         const text = textInput.value.trim();
-        if (text) fetchPlaylist(text);
+        if (text) fetchMoodVideos(text);
     }
 });
 
@@ -123,7 +93,7 @@ startBtn.addEventListener("click", async () => {
 
             if (detection) {
                 const mood = mapExpressionsToMood(detection.expressions);
-                fetchPlaylist(mood);
+                fetchMoodVideos(mood);
             }
         }, 5000);
     } catch (err) {
@@ -139,7 +109,6 @@ function mapExpressionsToMood(expressions) {
     if (expressions.happy > 0.5) return "Happy";
     if (expressions.sad > 0.5) return "Sad";
     if (expressions.angry > 0.5) return "Energetic";
-    if (expressions.romantic > 0.5) return "Romantic"; // optional
     if (expressions.surprised > 0.5) return "Surprised";
     if (expressions.fear > 0.5) return "Fearful";
     if (expressions.disgust > 0.5 || expressions.neutral > 0.5) return "Calm";

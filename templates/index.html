@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moodify – AI Music Recommender</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
+  <link rel="icon" href="{{ url_for('static', filename='music-heart-logo.png') }}" type="image/png">
 </head>
 <body>
   <header>
@@ -14,6 +14,9 @@
   </header>
 
   <main>
+    <!-- -----------------------------
+    Mood Detection Section
+    ----------------------------- -->
     <section id="mood-detection">
       <h2>Detect Your Mood</h2>
 
@@ -30,14 +33,11 @@
       <p id="detected-mood">Your mood: <span>Unknown</span></p>
     </section>
 
-    <!-- Combined results in two columns -->
+    <!-- -----------------------------
+         YouTube Results Section
+    ----------------------------- -->
     <section id="results">
-      <div class="column">
-        <h2>🎵 Recommended Deezer Songs</h2>
-        <ul id="songs-list"></ul>
-      </div>
-
-      <div class="column">
+      <div class="column" id="youtube-videos">
         <h2>📺 YouTube Mood Videos</h2>
         <ul id="youtube-list"></ul>
       </div>
