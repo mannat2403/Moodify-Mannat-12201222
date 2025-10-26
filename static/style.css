@@ -107,7 +107,11 @@ main {
 
 
 /* -----------------------------
+<<<<<<< HEAD
    Results Section
+=======
+   Results Section (Dual Columns)
+>>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
 ----------------------------- */
 #results {
     display: flex;
@@ -120,9 +124,15 @@ main {
 }
 
 /* -----------------------------
+<<<<<<< HEAD
    YouTube Playlist Section
 ----------------------------- */
 #youtube-videos {
+=======
+   Playlist & YouTube Section
+----------------------------- */
+#playlist, #youtube-videos {
+>>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
     background: rgba(255, 255, 255, 0.95);
     padding: 1.5rem;
     border-radius: 15px;
@@ -130,17 +140,29 @@ main {
     margin-bottom: 2rem;
 }
 
+<<<<<<< HEAD
 #youtube-videos h2 {
+=======
+#playlist h2, #youtube-videos h2 {
+>>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
     margin-bottom: 1rem;
     font-size: 1.8rem;
     color: #4a00e0;
 }
 
+<<<<<<< HEAD
 #youtube-list {
     list-style: none;
 }
 
 #youtube-list li {
+=======
+#songs-list, #youtube-list {
+    list-style: none;
+}
+
+#songs-list li, #youtube-list li {
+>>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -151,20 +173,38 @@ main {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
+<<<<<<< HEAD
 #youtube-list li:hover {
+=======
+#songs-list li:hover, #youtube-list li:hover {
+>>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
+<<<<<<< HEAD
 #youtube-list img {
+=======
+#songs-list img, #youtube-list img {
+>>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
     border-radius: 8px;
     width: 60px;
     height: 60px;
     object-fit: cover;
 }
 
+<<<<<<< HEAD
 /* -----------------------------
    Mood-Based Backgrounds
+=======
+audio {
+    margin-left: auto;
+    outline: none;
+}
+
+/* -----------------------------
+   Mood-based background colors
+>>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
 ----------------------------- */
 body.Happy {
     background: linear-gradient(to right, #fddb92, #d1fdff);
@@ -213,9 +253,23 @@ body.Surprised {
         width: 90%;
     }
 
+<<<<<<< HEAD
     #youtube-list li {
+=======
+    #songs-list li, #youtube-list li {
+>>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
         flex-direction: column;
         align-items: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    header p {
+        font-size: 1rem;
     }
 }
 
