@@ -5,42 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moodify – AI Music Recommender</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<<<<<<< HEAD
   <link rel="icon" href="{{ url_for('static', filename='music-heart-logo.png') }}" type="image/png">
-=======
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
->>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
     <h1>🎧 Moodify</h1>
-    <p>Music that matches your mood instantly</p>
+    <p>Discover songs that match your mood</p>
   </header>
 
   <main>
-<<<<<<< HEAD
     <!-- -----------------------------
     Mood Detection Section
     ----------------------------- -->
-=======
->>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
     <section id="mood-detection">
       <h2>Detect Your Mood</h2>
 
       <!-- Webcam section -->
       <video id="webcam" width="320" height="240" autoplay muted></video>
-      <button id="start-webcam-btn">Start Webcam Detection</button>
+      <button id="start-webcam-btn" class="glow-btn">🎥 Start Webcam Detection</button>
 
-      <p>OR</p>
+      <p class="divider">── OR ──</p>
 
       <!-- Text input section -->
       <input type="text" id="text-input" placeholder="Type how you feel...">
-      <button id="analyze-text-btn">Analyze Mood</button>
+      <button id="analyze-text-btn" class="glow-btn">💭 Analyze Mood</button>
 
       <p id="detected-mood">Your mood: <span>Unknown</span></p>
     </section>
 
-<<<<<<< HEAD
     <!-- -----------------------------
          YouTube Results Section
     ----------------------------- -->
@@ -48,26 +41,11 @@
       <div class="column" id="youtube-videos">
         <h2>📺 YouTube Mood Videos</h2>
         <ul id="youtube-list"></ul>
+        <button id="see-more-btn" class="see-more-btn" style="display: none;">See More</button>
       </div>
     </section>
   </main>
 
-=======
-    <!-- Combined results in two columns -->
-    <section id="results">
-      <div class="column">
-        <h2>🎵 Recommended Deezer Songs</h2>
-        <ul id="songs-list"></ul>
-      </div>
-
-      <div class="column">
-        <h2>📺 YouTube Mood Videos</h2>
-        <ul id="youtube-list"></ul>
-      </div>
-    </section>
-  </main>
-
->>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
   <!-- Face detection and main JS -->
   <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
   <script defer src="{{ url_for('static', filename='script.js') }}"></script>
