@@ -1,74 +1,18 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 import random
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
-<<<<<<< HEAD
-# Load environment variables from .env file
 load_dotenv()
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
-=======
-# Tell Python exactly where to find your .env file
-# __file__ means "this file" (main.py)
-# os.path.dirname(__file__) → the folder containing this file (Moodify/app)
-# os.path.dirname(os.path.dirname(__file__)) → one level up (Moodify/)
-env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
-
-# Load your .env file from that path
-load_dotenv(dotenv_path=env_path)
-load_dotenv()
-YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
-
-# Check if it’s working (this line will print your key)
-print("Loaded YouTube API Key:", os.getenv("YOUTUBE_API_KEY"))
-
-# -----------------------------
-# Load environment variables
-# -----------------------------
-# load_dotenv()
-# YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
->>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
 
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
-# -----------------------------
-<<<<<<< HEAD
-# Load environment variables
-# -----------------------------
-load_dotenv()
-
-# Get YouTube API key securely
-
-YOUTUBE_API_KEY = os.getenv( "YOUTUBE_API_KEY")
-
-# -----------------------------
-# Home route
-# -----------------------------
-
-=======
-# Home route
-# -----------------------------
->>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
 @app.route("/")
 def home():
     return render_template("index.html")
 
-<<<<<<< HEAD
-=======
-
-# @app.route("/get_songs")
-# def get_songs():
-#     print("Using API Key:", YOUTUBE_API_KEY)
-#     # Your YouTube fetch logic here
-#     return {"status": "ok"}
-
-
-
->>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
-# -----------------------------
-# Mood detection route
-# -----------------------------
 @app.route("/detect_mood", methods=["POST"])
 def detect_mood():
     text = request.json.get("text", "").lower()
@@ -85,7 +29,7 @@ def detect_mood():
         "Surprised": ["surprised", "shocked", "wow", "unexpected"]
     }
 
-    # Detect mood from text
+    # Detect mood
     detected_mood = None
     for mood, words in mood_keywords.items():
         if any(word in text for word in words):
@@ -94,81 +38,33 @@ def detect_mood():
     if not detected_mood:
         detected_mood = random.choice(list(mood_keywords.keys()))
 
-    # -----------------------------
-    # Fetch Deezer playlist
-    # -----------------------------
-    playlist = []
-    try:
-        url = f"https://api.deezer.com/search?q={detected_mood}"
-        res = requests.get(url).json()
-        for track in res.get("data", [])[:5]:
-            playlist.append({
-<<<<<<< HEAD
-                "title": track["title"],
-                "artist": track["artist"]["name"],
-                "album_cover": track["album"]["cover_small"],
-                "preview": track["preview"]
-            })
-=======
-                "title": track.get("title", "Unknown Title"),
-                "artist": track.get("artist", {}).get("name", "Unknown Artist"),
-                "album_cover": track.get("album", {}).get("cover_small", ""),
-                "preview": track.get("preview", "")
-        })
-
->>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
-    except Exception as e:
-        print("Deezer API error:", e)
-        playlist = []
-
-    # -----------------------------
     # Fetch YouTube videos
-    # -----------------------------
     youtube_videos = []
-    if YOUTUBE_API_KEY:
-        try:
-            yt_url = (
-                f"https://www.googleapis.com/youtube/v3/search"
-                f"?part=snippet&type=video&q={detected_mood}+songs"
-                f"&maxResults=5&key={YOUTUBE_API_KEY}"
-            )
-            yt_res = requests.get(yt_url).json()
-            for item in yt_res.get("items", []):
-                youtube_videos.append({
-                    "title": item["snippet"]["title"],
-                    "channel": item["snippet"]["channelTitle"],
-                    "thumbnail": item["snippet"]["thumbnails"]["default"]["url"],
-                    "video_url": f"https://www.youtube.com/watch?v={item['id']['videoId']}"
-                })
-        except Exception as e:
-            print("YouTube API error:", e)
-            youtube_videos = []
+    try:
+        yt_url = (
+            f"https://www.googleapis.com/youtube/v3/search"
+            f"?part=snippet&type=video&q={detected_mood}+songs"
+            f"&maxResults=5&key={YOUTUBE_API_KEY}"
+        )
+        yt_res = requests.get(yt_url).json()
+        for item in yt_res.get("items", []):
+            video_id = item["id"].get("videoId")
+            if not video_id:
+                continue
+            youtube_videos.append({
+                "title": item["snippet"]["title"],
+                "channel": item["snippet"]["channelTitle"],
+                "thumbnail": item["snippet"]["thumbnails"]["default"]["url"],
+                "video_url": f"https://www.youtube.com/watch?v={video_id}"
+            })
+    except Exception as e:
+        print("YouTube API error:", e)
+        youtube_videos = []
 
-<<<<<<< HEAD
     return jsonify({
         "mood": detected_mood,
-        "playlist": playlist,
         "youtube_videos": youtube_videos
     })
 
-=======
-    # ✅ Debug lines
-    print("Detected Mood:", detected_mood)
-    print("Deezer playlist count:", len(playlist))
-    print("YouTube videos count:", len(youtube_videos))
-
-    # -----------------------------
-    # Return JSON response
-    # -----------------------------
-    return jsonify({
-        "mood": detected_mood,
-        "playlist": playlist,
-        "youtube_videos": youtube_videos
-    })
-
->>>>>>> e11cd42880d14026f6ea584a14fd8bc5932d0027
-# -----------------------------
-# Run the app
-# -----------------------------
 if __name__ == "__main__":
     app.run(debug=True)
